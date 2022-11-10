@@ -1,0 +1,8 @@
+trigger SimpleTrigger on Account (before insert, before update) {
+    if(Trigger.isInsert){
+        System.debug('Hi iam in Before Insert trigger');
+    }
+    if(Trigger.isUpdate){
+        System.debug('Hi iam in Before update trigger');
+    }
+}
