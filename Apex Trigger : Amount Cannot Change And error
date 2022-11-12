@@ -1,0 +1,22 @@
+trigger updateOppAmountTrigger on Opportunity (before update) {
+  
+
+    if(trigger.isbefore && trigger.isupdate){
+        
+        Map<Id,Opportunity> oldmap = trigger.oldmap;
+        Map<Id,Opportunity> newmap = trigger.newmap;
+        
+        for(opportunity oppold : oldmap.values()){
+            
+            if(newmap.containsKey(oppold.id)){
+           
+                if(oppold.amount != newmap.get(oppold.id).amount){
+                    System.debug('Yes amount is not equal to old: '+ oppold.amount + '  New: '+ newmap.get(oppold.id).amount);
+                    newmap.get(oppold.id).amount.addError('you cannot change the amount cause there is a trigger');
+                }
+            }
+        }
+        
+}
+
+}
