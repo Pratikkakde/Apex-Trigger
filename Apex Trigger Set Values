@@ -1,0 +1,12 @@
+trigger insertAccountTrigger on Account (before insert) {
+    
+    if(trigger.isbefore && trigger.isinsert){
+        for( Account acc: trigger.new){
+            if(acc.Rating =='Warm'){
+                acc.industry = 'Banking';
+            }
+        }
+        
+    }
+
+}
