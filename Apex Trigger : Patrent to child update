@@ -1,0 +1,31 @@
+trigger childContactUpdateWhenAccountUpdate on Account (after update) {
+    if(trigger.isafter && trigger.isupdate){
+        
+        //Account id Stored in set
+        set<id> accSetId = trigger.oldmap.keyset();
+            
+        //fetch Releted Contact of All Account
+            List<Contact> listContact = [SELECT name,AccountId,MailingCity FROM Contact WHERE accountId in : accSetId ];
+        
+        //Loping the account whose ,Checks its billing city change or not
+        for(Account accold : trigger.oldmap.values()){
+           
+            if(trigger.newmap.containskey(accold.id)){
+                if(accold.BillingCity != trigger.newmap.get(accold.id).BillingCity){
+                    
+                    for(Contact con : listContact){
+                        if(con.AccountId == accold.id){
+                            
+                            con.MailingCity = trigger.newmap.get(accold.id).Billingcity;
+                            System.debug('con : ' + con);
+                          
+                        }
+                    }
+                }
+            }
+        }
+      
+         update listContact;
+          System.debug('listContact : ' + listContact);
+    }
+}
