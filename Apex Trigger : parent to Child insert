@@ -1,0 +1,20 @@
+trigger insertAccountWIthChildconInsertTrigger on Account (after insert) {
+
+    if(trigger.isafter && trigger.isinsert){
+        
+        list<Contact> con = new list<contact>();
+        for(Account acc : trigger.new){
+           
+            if(acc.Rating == 'Warm' && acc.Industry == 'Energy'){
+                contact connew = new contact ();
+                connew.Lastname = acc.name + 'Child Contact';
+                connew.AccountId = acc.Id;
+                
+                con.add(connew);
+                
+            }
+                
+        }
+        insert con;
+    }
+}
