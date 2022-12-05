@@ -1,0 +1,10 @@
+trigger triggerOnCaseInsert on Case (before insert) {
+    if(trigger.isBefore && trigger.isinsert){
+        for(case c : trigger.new){
+            if(c.origin == 'Email'){
+                c.status = 'Working';
+                    c.priority = 'High';
+            }
+        }
+    }
+}
