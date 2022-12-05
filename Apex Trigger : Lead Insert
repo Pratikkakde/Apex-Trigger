@@ -1,0 +1,13 @@
+trigger apexTriggerOnLeadSource on Lead (before insert) {
+    if(trigger.isBefore && trigger.isInsert){
+        for(lead newLead : trigger.new){
+            if(newLead.leadSource == 'Web'){
+                newLead.Rating = 'Cold';
+            }
+            else{
+                newLead.Rating = 'Hot';
+            }
+        }
+    }
+
+}
