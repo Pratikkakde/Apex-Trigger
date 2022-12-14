@@ -1,0 +1,20 @@
+trigger accountRatingTrigger on Account (before update) {
+    if(trigger.isbefore && trigger.isupdate){
+        
+        map<Id,Account> oldMap = trigger.oldMap;
+        map<Id,Account> newMap = trigger.newMap;
+        
+        for(Account accOld : oldMAp.values()){
+            if(newMap.containsKey(accOld.Id)){
+                if(accOld.Rating!=newMap.get(accold.ID).Rating){
+                    
+                    newMap.get(accold.ID).Rating.addError('You Cannot Change Rating');
+                    System.debug('Old Rating: ' + accOld.Rating);
+                    System.debug('new Rating: ' + newMap.get(accOld.Id).Rating);
+                }
+            }
+        }
+
+       
+    }
+}
