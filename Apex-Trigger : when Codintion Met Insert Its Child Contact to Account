@@ -1,0 +1,17 @@
+trigger accountTriggerwithcontactInsert on Account (after insert) {
+    if(trigger.isafter && trigger.isinsert){
+        
+        List<Contact> conList = new List<contact> ();
+        for(Account acc : trigger.new){
+            contact con = new contact();
+            if(acc.Rating =='Warm' && acc.Industry =='Energy'){
+                con.LastName = acc.Name +'ChildContact';
+                    con.AccountId = acc.Id;
+                conList.add(con);
+            }
+        }
+        insert conList;
+        System.debug('new Contact List' + conList);
+    }
+    
+}
