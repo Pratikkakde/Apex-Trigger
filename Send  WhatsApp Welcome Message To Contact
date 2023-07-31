@@ -1,0 +1,36 @@
+public class WhatsAppIntegrationController {
+    
+    @AuraEnabled
+    public static boolean sendMessageTemplate(String contactId){
+        Contact condetail = [SELECT id,Phone FROM Contact WHERE Id =: contactId];
+        String whatsAppNumber = '+91'+condetail.Phone;
+        System.debug('whatsAppNumber: '+whatsAppNumber);
+        
+        Http http = new Http();
+        HttpRequest request = new HttpRequest();
+        request.setEndpoint('https://graph.facebook.com/v17.0/116463361524825/messages');
+        request.setMethod('POST');
+        request.setHeader('Authorization', 'Bearer EABStV9M0w6sBO0M04sLqecjJA8VuX5JyWPl4yIZAiJLqfs25fIGzY4V1BuCKOndpocdauLm38cTjBeGcgkMOn3h8MFf6dnIyCEQE95X2vZBtbVpD1oKrtbK7IkGf1uiK2Pe4cJiSUTTZBypxVqp11o3xogN117J125FzyB5RzrLsDdcvdL7b1TaetOMF1xpKGSnP98o4xqZCBMXRAhMZD');
+        request.setHeader('Content-Type','application/json');
+        request.setBody('{ "messaging_product": "whatsapp","to": "'+whatsAppNumber+'","type": "template","template": { "name": "hello_world","language": { "code": "en_US" } } }');
+        
+        
+        
+        
+        HttpResponse response = http.send(request);
+        System.debug('StatusCode '+response.getStatusCode());
+        system.debug(response.getBody());
+        
+        try{
+            if(response.getStatusCode() == 200) {
+                system.debug('whatsApp message send sucessfully'+response.getBody());
+                return true;
+            }
+        } catch(Exception e){
+            system.debug('e message : '+e.getMessage());
+        } finally {
+            system.debug('Status Code : '+response.getStatusCode());
+        }
+        return false;
+    }
+}
